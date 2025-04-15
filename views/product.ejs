@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Szczegóły produktu</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+  <!-- Wyświetlenie nazwy produktu -->
+  <h1><%= product.name %></h1>
+  
+  <!-- Wyświetlenie opisu produktu -->
+  <div>
+    <%= product.description %>
+  </div>
+  
+  <!-- Przycisk usuwania produktu -->
+  <button onclick="deleteProduct('<%= product.name %>')">Usuń</button>
+  
+  <!-- Funkcja JavaScript do usuwania produktu -->
+  <script>
+    function deleteProduct(nazwa) {
+      if (confirm("Czy na pewno chcesz usunąć produkt: " + nazwa + "?")) {
+        fetch(`/products/${nazwa}`, {
+          method: "DELETE"
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Jeśli usunięcie się powiodło, przekierowujemy do listy produktów
+            window.location.href = '/products';
+          } else {
+            alert("Wystąpił błąd podczas usuwania produktu.");
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          alert("Wystąpił błąd podczas usuwania produktu.");
+        });
+      }
+    }
+  </script>
+
+</body>
+</html>
